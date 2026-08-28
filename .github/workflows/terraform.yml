@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/terraform-infrastructure
+      - main
 
   pull_request:
     branches:
@@ -11,7 +12,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Validation
+    name: Terraform CI
     runs-on: ubuntu-latest
 
     defaults:
@@ -34,3 +35,10 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
