@@ -1,3 +1,0 @@
-variable "public_ips" {
-
-}
